@@ -18,7 +18,7 @@ export default function Index() {
   // State to store the selected image URI
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
 
-  // State to toggle between app options and footer buttons
+  // State to toggle between app options and footer buttonsaa
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
 
   // State to control the visibility of the emoji picker modal
