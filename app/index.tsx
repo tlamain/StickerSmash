@@ -11,7 +11,8 @@ import EmojiSticker from '@/components/EmojiSticker';
 import IconButton from '@/components/IconButton';
 import ImageViewer from '@/components/ImageViewer';
 
-// Placeholder image used when no image is selected
+// Placeholder image used when no image is selected- background image
+// This image is displayed when the user has not selected any image from their library
 const PlaceholderImage = require('@/assets/images/background-image.png');
 
 export default function Index() {
