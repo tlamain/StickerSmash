@@ -1,130 +1,50 @@
-import { type ImageSource } from 'expo-image';
-import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Link } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
 
-import Button from '@/components/Button';
-import CircleButton from '@/components/CircleButton';
-import EmojiList from '@/components/EmojiList';
-import EmojiPicker from '@/components/EmojiPicker';
-import EmojiSticker from '@/components/EmojiSticker';
-import IconButton from '@/components/IconButton';
-import ImageViewer from '@/components/ImageViewer';
-
-// Placeholder image used when no image is selected- background image
-// This image is displayed when the user has not selected any image from their library
-const PlaceholderImage = require('@/assets/images/background-image.png');
-
-export default function Index() {
-  // State to store the selected image URI
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-
-  // State to toggle between app options and footer buttonsaa
-  const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
-
-  // State to control the visibility of the emoji picker modal
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
-  // State to store the selected emoji
-  const [pickedEmoji, setPickedEmoji] = useState<ImageSource | undefined>(undefined);
-
-  // Function to open the image picker and allow the user to select an image
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'], // Only allow image selection
-      allowsEditing: true,    // Allow basic editing like cropping
-      quality: 1,             // Set the image quality to maximum
-    });
-
-    if (!result.canceled) {
-      // If an image is selected, update the state and show app options
-      setSelectedImage(result.assets[0].uri);
-      setShowAppOptions(true);
-    } else {
-      // Alert the user if no image is selected
-      alert('You did not select any image.');
-    }
-  };
-
-  // Function to reset the app state
-  const onReset = () => {
-    setShowAppOptions(false);
-  };
-
-  // Function to open the emoji picker modal
-  const onAddSticker = () => {
-    setIsModalVisible(true);
-  };
-
-  // Function to close the emoji picker modal
-  const onModalClose = () => {
-    setIsModalVisible(false);
-  };
-
-  // Placeholder function to save the image (to be implemented later)
-  const onSaveImageAsync = async () => {
-    // we will implement this later
-  };
-
+// This is the main menu screen of your app.
+export default function MainMenuScreen() { // Ensure export default is here
   return (
     <View style={styles.container}>
-      {/* Image container to display the selected image or placeholder */}
-      <View style={styles.imageContainer}>
-        <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
-        {/* Display the selected emoji sticker if one is picked */}
-        {pickedEmoji && <EmojiSticker imageSize={80} stickerSource={pickedEmoji} />}
-      </View>
+      <Text style={styles.title}>Image Categorizer</Text>
 
-      {/* Conditional rendering: Show app options or footer buttons */}
-      {showAppOptions ? (
-        <View style={styles.optionsContainer}>
-          <View style={styles.optionsRow}>
-            {/* Reset button */}
-            <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            {/* Add sticker button */}
-            <CircleButton onPress={onAddSticker} />
-            {/* Save image button */}
-            <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
-          </View>
-        </View>
-      ) : (
-        <View style={styles.footerContainer}>
-          {/* Button to choose a photo */}
-          <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
-          {/* Button to use the selected photo */}
-          <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
-        </View>
-      )}
+      {/* Link to the Edit Categories screen */}
+      <Link href="/edit-categories" style={styles.link}>
+        Edit Categories
+      </Link>
 
-      {/* Emoji picker modal */}
-      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-        {/* Emoji list to select an emoji */}
-        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
-      </EmojiPicker>
+      {/* Link to the Select Image screen */}
+      <Link href="/select-image" style={styles.link}>
+        Select Images
+      </Link>
+
+      {/* Link to the View Categories screen */}
+      <Link href="/view-categories" style={styles.link}>
+        View Images
+      </Link>
+
+      {/* Add other menu options here */}
     </View>
   );
 }
 
-// Styles for the components
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Take up the full screen
-    backgroundColor: '#25292e', // Dark background color
-    alignItems: 'center', // Center content horizontally
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#25292e', // Dark background
+    padding: 20,
   },
-  imageContainer: {
-    flex: 1, // Take up the remaining space
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff', // White text
+    marginBottom: 40,
   },
-  footerContainer: {
-    flex: 1 / 3, // Take up one-third of the screen
-    alignItems: 'center', // Center content horizontally
-  },
-  optionsContainer: {
-    position: 'absolute', // Position at the bottom of the screen
-    bottom: 80, // Offset from the bottom
-  },
-  optionsRow: {
-    alignItems: 'center', // Center items horizontally
-    flexDirection: 'row', // Arrange items in a row
+  link: {
+    fontSize: 18,
+    color: '#007BFF', // Blue link color
+    textDecorationLine: 'underline',
+    marginVertical: 10, // Vertical spacing between links
   },
 });
